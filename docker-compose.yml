@@ -1,0 +1,13 @@
+services:
+  ros:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jazzy
+    user: jazzer
+    environment:
+      - DISPLAY=${DISPLAY}
+    volumes:
+      - ./src:/home/jazzer/src
+      - /tmp/.X11-unix:/tmp/.X11-unix # Required for X11 forwarding
+    tty: true
