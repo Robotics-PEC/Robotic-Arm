@@ -1,1 +1,1 @@
-# Robotic-Arm
+# UR5 Robotic Arm
