@@ -12,7 +12,7 @@ find_package(ament_cmake REQUIRED)
 # find_package(<dependency> REQUIRED)
 
 # Install URDF and Xacro files
-install(DIRECTORY urdf meshes config launch include src
+install(DIRECTORY urdf meshes config launch include rviz src
   DESTINATION share/${PROJECT_NAME}
 )
 
