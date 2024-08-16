@@ -11,3 +11,9 @@ services:
       - ./src/:/home/jazzer/workspace/src/
       # - /tmp/.X11-unix:/tmp/.X11-unixs
     tty: true
+    deploy:
+          resources:
+            reservations:
+              devices:
+                - driver: nvidia
+                  capabilities: [gpu]
