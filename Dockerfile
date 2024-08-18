@@ -31,7 +31,6 @@ RUN apt update -q \
     ros-${ROS_DISTRO}-turtlebot3 \
     ros-${ROS_DISTRO}-ros2-controllers \
     ros-${ROS_DISTRO}-controller-manager \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
     locales \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*

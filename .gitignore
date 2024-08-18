@@ -49,5 +49,4 @@ qtcreator-*
 # Emacs
 .#*
 
-# Catkin custom files
-CATKIN_IGNORE
+docker-compose.override.yml
