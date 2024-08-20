@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Add sourcing of the setup.bash to .bashrc if it's not already there
-if ! grep -q "source /opt/ros/jazzy/setup.bash" ~/.bashrc; then
-    echo "source /opt/ros/jazzy/setup.bash" >> ~/.bashrc
+if ! grep -q "source /opt/ros/humble/setup.bash" ~/.bashrc; then
+    echo "source /opt/ros/humble/setup.bash" >> ~/.bashrc
 fi
 if ! grep -q "source ~/workspace/install/setup.bash" ~/.bashrc; then
     echo "source ~/workspace/install/setup.bash" >> ~/.bashrc
