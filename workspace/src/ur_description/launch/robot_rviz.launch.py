@@ -25,19 +25,13 @@ ARGUMENTS = [
     ),
     DeclareLaunchArgument(
         "model",
-        default_value="ur5.xacro",
-        choices=[
-            "ur3.xacro",
-            "ur3e.xacro",
-            "ur5.xacro",
-            "ur5e.xacro",
-            "ur10.xacro",
-            "ur10e.xacro",
-            "ur16e.xacro",
-            "ur20.xacro",
-            "ur30.xacro",
-        ],
+        default_value="ur5",
         description="Model to spawn",
+    ),
+     DeclareLaunchArgument(
+        "model_xacro",
+        default_value=[LaunchConfiguration("model"), ".xacro"],
+        description="Xacro file for the Model",
     ),
 ]
 
@@ -51,7 +45,7 @@ def generate_launch_description():
 
     # Construct the path to the Xacro file
     xacro_file = PathJoinSubstitution(
-        [pkg_ur_description, "urdf", LaunchConfiguration("model")]
+        [pkg_ur_description, "urdf", LaunchConfiguration("model_xacro")]
     )
 
     robot_desc = ParameterValue(Command(["xacro ", xacro_file]), value_type=str)

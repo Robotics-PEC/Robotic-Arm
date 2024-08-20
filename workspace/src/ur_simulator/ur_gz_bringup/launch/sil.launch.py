@@ -2,20 +2,22 @@ from os import environ
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, IncludeLaunchDescription
+from launch.actions import (
+    DeclareLaunchArgument,
+    IncludeLaunchDescription,
+    ExecuteProcess,
+)
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
-from launch.actions import ExecuteProcess
-from launch.conditions import LaunchConfigurationEquals, IfCondition
+from launch.substitutions import (
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    TextSubstitution,
+)
+from launch.conditions import IfCondition
 from launch_ros.actions import Node
 
+# Define launch arguments
 ARGUMENTS = [
-    DeclareLaunchArgument("x", default_value=["-4.552800"], description="x position"),
-    DeclareLaunchArgument("y", default_value=["-2.12171"], description="y position"),
-    DeclareLaunchArgument("z", default_value=["1"], description="z position"),
-    DeclareLaunchArgument(
-        "yaw", default_value=["-0.1300000"], description="yaw position"
-    ),
     DeclareLaunchArgument("world", default_value="empty", description="GZ World"),
     DeclareLaunchArgument(
         "use_sim_time",
@@ -24,53 +26,78 @@ ARGUMENTS = [
         description="Use sim time",
     ),
     DeclareLaunchArgument(
-        "spawn_model",
-        default_value="true",
-        choices=["true", "false"],
-        description="Whether to spawn the UR model",
-    ),
-    DeclareLaunchArgument(
         "description",
         default_value="true",
         choices=["true", "false"],
         description="Run description",
     ),
+    DeclareLaunchArgument(
+        "spawn_model",
+        default_value="true",
+        choices=["true", "false"],
+        description="Spawn Model",
+    ),
+    DeclareLaunchArgument(
+        "model",
+        default_value="ur5",
+        description="URDF or Xacro model file",
+    ),
+     DeclareLaunchArgument(
+        "model_xacro",
+        default_value=[LaunchConfiguration("model"), ".xacro"],
+        description="Xacro file for the Model",
+    ),
 ]
 
 
 def generate_launch_description():
-    gz_sim = IncludeLaunchDescription(
-        PythonLaunchDescriptionSource(
-            [
-                PathJoinSubstitution(
-                    [
-                        get_package_share_directory("ros_gz_sim"),
-                        "launch",
-                        "gz_sim.launch.py",
-                    ]
-                )
-            ]
-        ),
-        launch_arguments=[
-            ("gz_args", [LaunchConfiguration("world"), ".sdf", " -v 4", " -r"])
-        ],
+    pkg_ur_description = get_package_share_directory("ur_description")
+
+    # Ensure pkg_ur_description is converted to string before using it
+    pkg_ur_description = str(pkg_ur_description)
+
+    # Construct the path to the Xacro file
+    xacro_file = PathJoinSubstitution(
+        [
+            pkg_ur_description,
+            "urdf",
+            LaunchConfiguration("model_xacro"),
+        ]
     )
 
-    # Robot description
+    # Command to process the Xacro file into URDF format
+    urdf_file = PathJoinSubstitution(["/tmp", "processed_ur.urdf"])
+
+    # Process the Xacro file into a URDF file
+    process_xacro = ExecuteProcess(
+        cmd=["xacro", xacro_file, "-o", urdf_file], output="screen"
+    )
+
+    # Include the robot description launch file
     robot_description = IncludeLaunchDescription(
         PythonLaunchDescriptionSource(
-            [
-                PathJoinSubstitution(
-                    [
-                        get_package_share_directory("ur_description"),
-                        "launch",
-                        "robot_description.launch.py",
-                    ]
-                )
-            ]
+            PathJoinSubstitution(
+                [
+                    get_package_share_directory("ur_description"),
+                    "launch",
+                    "robot_description.launch.py",
+                ]
+            )
         ),
         condition=IfCondition(LaunchConfiguration("description")),
-        launch_arguments=[("use_sim_time", LaunchConfiguration("use_sim_time"))],
+        launch_arguments={"use_sim_time": LaunchConfiguration("use_sim_time")}.items(),
+    )
+
+    gz_sim = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution(
+                [
+                    get_package_share_directory("ros_gz_sim"),
+                    "launch",
+                    "gz_sim.launch.py",
+                ]
+            )
+        )
     )
 
     spawn_robot = Node(
@@ -81,24 +108,14 @@ def generate_launch_description():
             "-world",
             "default",
             "-name",
-            "ur",
-            "-x",
-            LaunchConfiguration("x"),
-            "-y",
-            LaunchConfiguration("y"),
-            "-z",
-            LaunchConfiguration("z"),
-            "-Y",
-            LaunchConfiguration("yaw"),
+            "ur5",
             "-file",
-            PathJoinSubstitution(
-                [
-                    get_package_share_directory("ur_gz_resources"),
-                    "models/ur/ur5.sdf",
-                ]
-            ),
+            urdf_file,
         ],
         output="screen",
         condition=IfCondition(LaunchConfiguration("spawn_model")),
     )
-    return LaunchDescription(ARGUMENTS + [gz_sim, robot_description,spawn_robot])
+
+    return LaunchDescription(
+        ARGUMENTS + [process_xacro, gz_sim, robot_description, spawn_robot]
+    )
