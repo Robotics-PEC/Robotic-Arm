@@ -1,11 +1,10 @@
 <?xml version="1.0"?>
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
-  <name>ur_description</name>
+  <name>ur_gz_resources</name>
   <version>0.0.0</version>
   <description>TODO: Package description</description>
-  <maintainer email="reeshavchowdhury18722@gmail.com">rishi</maintainer>
-  <maintainer email="shashankmarch27@gmail.com">Witty-Wizard</maintainer>3
+  <maintainer email="shashankmarch27@gmail.com">Witty-Wizard</maintainer>
   <license>GPL-3.0-only</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>
@@ -15,6 +14,5 @@
 
   <export>
     <build_type>ament_cmake</build_type>
-    <!--gazebo_ros gazebo_model_path="${prefix}/.." /--> 
   </export>
 </package>
