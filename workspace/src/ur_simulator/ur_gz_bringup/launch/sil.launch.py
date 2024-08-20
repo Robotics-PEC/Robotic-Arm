@@ -29,6 +29,12 @@ ARGUMENTS = [
         choices=["true", "false"],
         description="Whether to spawn the UR model",
     ),
+    DeclareLaunchArgument(
+        "description",
+        default_value="true",
+        choices=["true", "false"],
+        description="Run description",
+    ),
 ]
 
 
@@ -50,4 +56,49 @@ def generate_launch_description():
         ],
     )
 
-    return LaunchDescription(ARGUMENTS + [gz_sim])
+    # Robot description
+    robot_description = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            [
+                PathJoinSubstitution(
+                    [
+                        get_package_share_directory("ur_description"),
+                        "launch",
+                        "robot_description.launch.py",
+                    ]
+                )
+            ]
+        ),
+        condition=IfCondition(LaunchConfiguration("description")),
+        launch_arguments=[("use_sim_time", LaunchConfiguration("use_sim_time"))],
+    )
+
+    spawn_robot = Node(
+        package="ros_gz_sim",
+        executable="create",
+        parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
+        arguments=[
+            "-world",
+            "default",
+            "-name",
+            "ur",
+            "-x",
+            LaunchConfiguration("x"),
+            "-y",
+            LaunchConfiguration("y"),
+            "-z",
+            LaunchConfiguration("z"),
+            "-Y",
+            LaunchConfiguration("yaw"),
+            "-file",
+            PathJoinSubstitution(
+                [
+                    get_package_share_directory("ur_gz_resources"),
+                    "models/ur/ur5.sdf",
+                ]
+            ),
+        ],
+        output="screen",
+        condition=IfCondition(LaunchConfiguration("spawn_model")),
+    )
+    return LaunchDescription(ARGUMENTS + [gz_sim, robot_description,spawn_robot])
