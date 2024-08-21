@@ -56,7 +56,8 @@ Follow the official ROS 2 [installation guide](https://docs.ros.org/en/humble/In
     ```
 
 ### Installation for Docker
-
+> [!IMPORTANT]  
+> Cross Check these installtion commands from the official Docker installation guide
 #### 1. Install Docker
 Docker is required to run the ROS 2 application in a containerized environment. Follow the official Docker [installation guide](https://docs.docker.com/desktop/install/linux-install/):
 
@@ -100,6 +101,8 @@ Docker is required to run the ROS 2 application in a containerized environment. 
     ```
 
 #### 2. Set Up NVIDIA Docker (Optional)
+> [!IMPORTANT]  
+> Cross Check these installtion commands from the official NVIDIA Docker installation guide
 If you're using GPU acceleration, you'll need to set up NVIDIA Docker. Follow the official Nvidia Container Toolkit [installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html):
 
 1. Install NVIDIA container toolkit:
@@ -147,9 +150,13 @@ ros2 launch ur_description robot_rviz.launch.py model:=<MODEL OF THE ROBOT>
 ```
 
 ### 2. Loading the Robot in Gazebo
-To start simulating the robot in Rviz run the following command:
+To start simulating the robot in Gazebo run the following command:
 ```bash
 ros2 launch ur_gz_bringup sil.launch.py model:=<MODEL OF THE ROBOT>
+```
+To start simulating the robot in Gazebo along with rviz run the following command:
+```bash
+ros2 launch ur_gz_bringup sil.launch.py model:=<MODEL OF THE ROBOT> rviz:=true
 ```
 ## License 
 This project is licensed under the GPL-3.0-only License. See the [LICENSE](LICENSE) file for more details.
