@@ -18,7 +18,7 @@ from launch_ros.actions import Node
 
 # Define launch arguments
 ARGUMENTS = [
-    DeclareLaunchArgument("world", default_value="empty", description="GZ World"),
+    DeclareLaunchArgument("world", default_value="basic_world", description="GZ World"),
     DeclareLaunchArgument(
         "use_sim_time",
         default_value="true",
@@ -42,10 +42,15 @@ ARGUMENTS = [
         default_value="ur5",
         description="URDF or Xacro model file",
     ),
-     DeclareLaunchArgument(
+    DeclareLaunchArgument(
         "model_xacro",
         default_value=[LaunchConfiguration("model"), ".xacro"],
         description="Xacro file for the Model",
+    ),
+    DeclareLaunchArgument(
+        "world_sdf",
+        default_value=[LaunchConfiguration("world"), ".sdf"],
+        description="World file for simulation",
     ),
 ]
 
@@ -97,21 +102,15 @@ def generate_launch_description():
                     "gz_sim.launch.py",
                 ]
             )
-        )
+        ),
+        launch_arguments={"gz_args": LaunchConfiguration("world_sdf")}.items(),
     )
 
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
         parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
-        arguments=[
-            "-world",
-            "default",
-            "-name",
-            "ur5",
-            "-file",
-            urdf_file,
-        ],
+        arguments=["-name", "ur5", "-file", urdf_file, "-z", "1.0"],
         output="screen",
         condition=IfCondition(LaunchConfiguration("spawn_model")),
     )
