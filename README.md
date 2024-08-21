@@ -103,6 +103,7 @@ Docker is required to run the ROS 2 application in a containerized environment. 
 #### 2. Set Up NVIDIA Docker (Optional)
 > [!IMPORTANT]  
 > Cross Check these installtion commands from the official NVIDIA Docker installation guide
+
 If you're using GPU acceleration, you'll need to set up NVIDIA Docker. Follow the official Nvidia Container Toolkit [installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html):
 
 1. Install NVIDIA container toolkit:
