@@ -333,4 +333,8 @@
       <child link="${prefix}tool0"/>
     </joint>
   </xacro:macro>
+  <gazebo>
+    <plugin filename="ignition-gazebo-joint-state-publisher-system"
+      name="ignition::gazebo::systems::JointStatePublisher" />
+  </gazebo>
 </robot>
