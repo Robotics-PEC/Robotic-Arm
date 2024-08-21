@@ -32,6 +32,12 @@ ARGUMENTS = [
         description="Run description",
     ),
     DeclareLaunchArgument(
+        "rviz",
+        default_value="false",
+        choices=["true", "false"],
+        description="Run rviz",
+    ),
+    DeclareLaunchArgument(
         "spawn_model",
         default_value="true",
         choices=["true", "false"],
@@ -106,15 +112,67 @@ def generate_launch_description():
         launch_arguments={"gz_args": LaunchConfiguration("world_sdf")}.items(),
     )
 
+    rviz_node = IncludeLaunchDescription(
+        PythonLaunchDescriptionSource(
+            PathJoinSubstitution(
+                [
+                    get_package_share_directory("ur_description"),
+                    "launch",
+                    "robot_rviz.launch.py",
+                ]
+            )
+        ),
+        condition=IfCondition(LaunchConfiguration("rviz")),
+    )
+
     spawn_robot = Node(
         package="ros_gz_sim",
         executable="create",
         parameters=[{"use_sim_time": LaunchConfiguration("use_sim_time")}],
-        arguments=["-name", "ur5", "-file", urdf_file, "-z", "1.0"],
+        arguments=[
+            "-name",
+            LaunchConfiguration("model"),
+            "-topic",
+            "robot_description",
+            "-z",
+            "1.0",
+        ],
         output="screen",
         condition=IfCondition(LaunchConfiguration("spawn_model")),
     )
 
+    bridge = Node(
+        package="ros_gz_bridge",
+        executable="parameter_bridge",
+        arguments=[
+            # Clock (IGN -> ROS2)
+            "/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock",
+            # Joint states (IGN -> ROS2)
+            [
+                "/world/",
+                LaunchConfiguration("world"),
+                "/model/",
+                LaunchConfiguration("model"),
+                "/joint_state",
+                "@sensor_msgs/msg/JointState[gz.msgs.Model",
+            ],
+        ],
+        remappings=[
+            (
+                [
+                    "/world/",
+                    LaunchConfiguration("world"),
+                    "/model/",
+                    LaunchConfiguration("model"),
+                    "/joint_state",
+                ],
+                "joint_states",
+            ),
+        ],
+        output="screen",
+    )
+
     return LaunchDescription(
-        ARGUMENTS + [process_xacro, gz_sim, robot_description, spawn_robot]
+        ARGUMENTS
+        + [process_xacro, gz_sim, robot_description, spawn_robot, rviz_node, bridge]
     )
