@@ -18,7 +18,7 @@ This project provides a ROS (Robot Operating System) package designed for contro
 > [!IMPORTANT]  
 > ROS 2 requires the universe repository, which is only available on Ubuntu or Ubuntu derivatives of Linux. If you are using Arch or other non-Ubuntu distributions, you must use Docker.
 
-### Part 1: Installation for Linux
+### Installation for Linux
 #### 1. Install Ubuntu 22.04 LTS
 
 If you haven't already installed Ubuntu, follow these steps:
@@ -55,7 +55,7 @@ Follow the official ROS 2 [installation guide](https://docs.ros.org/en/humble/In
     sudo apt install python3-argcomplete python3-colcon-common-extensions
     ```
 
-### Part 2: Installation for Docker
+### Installation for Docker
 
 #### 1. Install Docker
 Docker is required to run the ROS 2 application in a containerized environment. Follow the official Docker [installation guide](https://docs.docker.com/desktop/install/linux-install/):
@@ -135,6 +135,8 @@ To run the container there is a convenient python script:
     ```bash
     ./launch exec
     ```
+### Installation for Windows and MacOS
+> I Like your enthusiasm, Best of Luck for your future endeavors!
 
 ## Running the Package
 
