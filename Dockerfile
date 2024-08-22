@@ -15,25 +15,16 @@ ENV PATH="/home/user/bin:${PATH}"
 # Set default shell during Docker image build to bash
 SHELL ["/bin/bash", "-l", "-c"]
 
+# Copy docker clean script
+COPY install/docker/docker_clean.sh /docker_clean.sh
+
 # Update and install additional packages if necessary
-RUN apt update -q \
-    && apt upgrade -q -y \
-    && apt install -y --no-install-recommends \
-    software-properties-common \
-    python3-pip \
-    nano \
-    xauth \
-    ros-${ROS_DISTRO}-joint-state-publisher-gui \
-    ros-${ROS_DISTRO}-moveit \
-    ros-${ROS_DISTRO}-slam-toolbox \
-    ros-${ROS_DISTRO}-navigation2 \
-    ros-${ROS_DISTRO}-nav2-bringup \
-    ros-${ROS_DISTRO}-ros2-controllers \
-    ros-${ROS_DISTRO}-controller-manager \
+RUN DEBIAN_FRONTEND=noninteractive apt-get -y update && \
+    apt upgrade -q -y && \
+    DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
     locales \
-    wget \
-    && apt clean \
-    && rm -rf /var/lib/apt/lists/*
+    && \
+    /docker_clean.sh
 
 # Initialise system locale
 ENV LANG=en_US.UTF-8
@@ -41,19 +32,17 @@ ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 RUN locale-gen en_US.UTF-8
 
+COPY install/scripts/ros.sh /tmp/install/ros.sh
+RUN /tmp/install/ros.sh && /docker_clean.sh
+
 COPY install/scripts/gazebo.sh /tmp/install/gazebo.sh
-RUN /tmp/install/gazebo.sh
+RUN /tmp/install/gazebo.sh && /docker_clean.sh
 
 # Create a new user named 'jazzer' with sudo privileges
-RUN useradd -m jazzer && echo "jazzer:password" | chpasswd && adduser jazzer sudo
+RUN useradd -m jazzer && echo "jazzer:password" | chpasswd && usermod -aG sudo jazzer
 
-# Copy the entry point script into the container
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-
-## Make sure the script is executable and accessible by 'jazzer'
-RUN chmod +x /usr/local/bin/entrypoint.sh \
-    && chown jazzer:jazzer /usr/local/bin/entrypoint.sh
-
+# Make it so that no password is required for sudo commands
+RUN echo "jazzer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
 
 # Switch to the 'jazzer' user
 USER jazzer
@@ -85,9 +74,11 @@ VOLUME /home/jazzer/.gitconfig
 RUN mkdir -p /home/jazzer/workspace/
 WORKDIR /home/jazzer/workspace
 
-# Make sure the script is executable
-RUN chmod +x /usr/local/bin/entrypoint.sh
+USER root
+# Copy the entry point script into the container
+COPY install/docker/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
 
 # Set the entry point to the script
 CMD ["/bin/bash"]
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
