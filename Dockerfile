@@ -30,9 +30,8 @@ RUN apt update -q \
     ros-${ROS_DISTRO}-nav2-bringup \
     ros-${ROS_DISTRO}-ros2-controllers \
     ros-${ROS_DISTRO}-controller-manager \
-    ros-${ROS_DISTRO}-controller-manager \
-    ros-${ROS_DISTRO}-ros-gz \
     locales \
+    wget \
     && apt clean \
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,6 +40,9 @@ ENV LANG=en_US.UTF-8
 ENV LANGUAGE=en_US:en
 ENV LC_ALL=en_US.UTF-8
 RUN locale-gen en_US.UTF-8
+
+COPY install/scripts/gazebo.sh /tmp/install/gazebo.sh
+RUN /tmp/install/gazebo.sh
 
 # Create a new user named 'jazzer' with sudo privileges
 RUN useradd -m jazzer && echo "jazzer:password" | chpasswd && adduser jazzer sudo
@@ -52,8 +54,32 @@ COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh \
     && chown jazzer:jazzer /usr/local/bin/entrypoint.sh
 
+
 # Switch to the 'jazzer' user
 USER jazzer
+
+# create setting directory for gazebo
+VOLUME /home/jazzer/.gz
+RUN mkdir -p /home/jazzer/.gz
+
+# create setting directory for jupyter
+VOLUME /home/jazzer/.jupyter
+RUN mkdir -p /home/jazzer/.jupyter
+
+# create .X11-unix directory
+VOLUME /tmp/.X11-unix
+RUN mkdir -p /tmp/.X11-unix
+
+# create .gnupg directory
+VOLUME /home/jazzer/.gnupg
+RUN mkdir -p /home/jazzer/.gnupg
+
+# create .ssh directory
+VOLUME /home/jazzer/.ssh
+RUN mkdir -p /home/jazzer/.ssh
+
+# create .gitconfig file
+VOLUME /home/jazzer/.gitconfig
 
 # Set up a working directory
 RUN mkdir -p /home/jazzer/workspace/
@@ -63,7 +89,5 @@ WORKDIR /home/jazzer/workspace
 RUN chmod +x /usr/local/bin/entrypoint.sh
 
 # Set the entry point to the script
+CMD ["/bin/bash"]
 ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
-
-# (Optional) Set up an entrypoint or CMD
-CMD ["bash"]
