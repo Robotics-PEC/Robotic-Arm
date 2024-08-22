@@ -43,6 +43,11 @@ RUN useradd -m jazzer && echo "jazzer:password" | chpasswd && usermod -aG sudo j
 
 # Make it so that no password is required for sudo commands
 RUN echo "jazzer ALL=(ALL) NOPASSWD:ALL" >> /etc/sudoers
+# Copy the entry point script into the container
+COPY install/docker/entrypoint.sh /
+RUN chmod +x /entrypoint.sh
+# Change ownership of the script to the user 'jazzer'
+RUN chown jazzer:jazzer /entrypoint.sh
 
 # Switch to the 'jazzer' user
 USER jazzer
@@ -73,11 +78,6 @@ VOLUME /home/jazzer/.gitconfig
 # Set up a working directory
 RUN mkdir -p /home/jazzer/workspace/
 WORKDIR /home/jazzer/workspace
-
-USER root
-# Copy the entry point script into the container
-COPY install/docker/entrypoint.sh /
-RUN chmod +x /entrypoint.sh
 
 # Set the entry point to the script
 CMD ["/bin/bash"]
