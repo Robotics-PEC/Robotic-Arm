@@ -35,9 +35,6 @@ RUN locale-gen en_US.UTF-8
 COPY install/scripts/ros.sh /tmp/install/ros.sh
 RUN /tmp/install/ros.sh && /docker_clean.sh
 
-COPY install/scripts/gazebo.sh /tmp/install/gazebo.sh
-RUN /tmp/install/gazebo.sh && /docker_clean.sh
-
 # Create a new user named 'jazzer' with sudo privileges
 RUN useradd -m jazzer && echo "jazzer:password" | chpasswd && usermod -aG sudo jazzer
 
