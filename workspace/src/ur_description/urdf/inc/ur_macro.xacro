@@ -333,8 +333,4 @@
       <child link="${prefix}tool0"/>
     </joint>
   </xacro:macro>
-  <gazebo>
-    <plugin filename="gz-sim-joint-state-publisher-system"
-      name="gz::sim::systems::JointStatePublisher" />
-  </gazebo>
 </robot>
