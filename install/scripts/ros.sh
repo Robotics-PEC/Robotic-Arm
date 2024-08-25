@@ -29,6 +29,8 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
   ros-${ROS_VERSION}-rmw-cyclonedds-cpp \
   ros-${ROS_VERSION}-rqt-tf-tree \
   ros-${ROS_VERSION}-topic-tools \
+  ros-${ROS_DISTRO}-ros-gz \
+  ros-${ROS_VERSION}-ign-ros2-control \
   locales \
   wget \
 
