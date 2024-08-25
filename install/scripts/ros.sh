@@ -16,9 +16,6 @@ sudo DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
   xauth \
   ros-${ROS_VERSION}-joint-state-publisher-gui \
   ros-${ROS_VERSION}-moveit \
-  ros-${ROS_VERSION}-slam-toolbox \
-  ros-${ROS_VERSION}-navigation2 \
-  ros-${ROS_VERSION}-nav2-bringup \
   ros-${ROS_VERSION}-ros2-controllers \
   ros-${ROS_VERSION}-controller-manager \
   ros-${ROS_VERSION}-actuator-msgs \

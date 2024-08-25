@@ -2,10 +2,13 @@
 
 # Add sourcing of the setup.bash to .bashrc if it's not already there
 if ! grep -q "source /opt/ros/humble/setup.bash" /home/jazzer/.bashrc; then
-    echo "source /opt/ros/humble/setup.bash" >> /home/jazzer//.bashrc
+    echo "source /opt/ros/humble/setup.bash" >>/home/jazzer//.bashrc
 fi
 if ! grep -q "source ~/workspace/install/setup.bash" /home/jazzer/.bashrc; then
-    echo "source ~/workspace/install/setup.bash" >> /home/jazzer/.bashrc
+    echo "source ~/workspace/install/setup.bash" >>/home/jazzer/.bashrc
+fi
+if ! grep -q "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" /home/jazzer/.bashrc; then
+    echo "source /usr/share/colcon_argcomplete/hook/colcon-argcomplete.bash" >>/home/jazzer/.bashrc
 fi
 
 # Source the .bashrc to load environment variables and aliases

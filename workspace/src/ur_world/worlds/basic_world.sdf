@@ -18,6 +18,7 @@
             filename="gz-sim-scene-broadcaster-system"
             name="gz::sim::systems::SceneBroadcaster">
         </plugin>
+
         <gui fullscreen='false'>
             <plugin name='3D View' filename='GzScene3D'>
                 <gz-gui>
@@ -109,5 +110,6 @@
                 </visual>
             </link>
         </model>
+
     </world>
 </sdf>

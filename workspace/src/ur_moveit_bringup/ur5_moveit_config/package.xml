@@ -7,7 +7,7 @@
      An automatically generated package with all the configuration and launch files for using the ur5_robot with the MoveIt Motion Planning Framework
   </description>
   <maintainer email="reeshav.chowdhury18722@gmail.com">reeshav</maintainer>
-  <maintainer email="shashankmarch27@gmail.com">Witty-Wizard</maintainer>3
+  <maintainer email="shashankmarch27@gmail.com">Witty-Wizard</maintainer>
   <license>GPL-3.0-only</license>
 
   <url type="website">http://moveit.ros.org/</url>
