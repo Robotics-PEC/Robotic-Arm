@@ -1,0 +1,27 @@
+moveit_setup_assistant_config:
+  urdf:
+    package: ur_description
+    relative_path: urdf/ur30.xacro
+  srdf:
+    relative_path: config/ur30_robot.srdf
+  package_settings:
+    author_name: witty-wizard
+    author_email: shashankmarch27@gmail.com
+    generated_timestamp: 1724598302
+  control_xacro:
+    command:
+      - position
+      - velocity
+    state:
+      - position
+      - velocity
+  modified_urdf:
+    xacros:
+      - control_xacro
+  control_xacro:
+    command:
+      - position
+      - velocity
+    state:
+      - position
+      - velocity

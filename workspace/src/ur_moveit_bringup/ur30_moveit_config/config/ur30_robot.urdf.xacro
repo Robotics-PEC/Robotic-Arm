@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro" name="ur30_robot">
+    <xacro:arg name="initial_positions_file" default="initial_positions.yaml" />
+
+    <!-- Import ur30_robot urdf file -->
+    <xacro:include filename="$(find ur_description)/urdf/ur30.xacro" />
+
+    <!-- Import control_xacro -->
+    <xacro:include filename="ur30_robot.ros2_control.xacro" />
+
+
+    <xacro:ur30_robot_ros2_control name="FakeSystem" initial_positions_file="$(arg initial_positions_file)"/>
+
+</robot>
