@@ -144,20 +144,17 @@ To run the container there is a convenient python script:
 
 ## Running the Package
 
-### 1. Loading the Robot in RVIZ
-To visualize the robot in Rviz run the following command:
-```bash
-ros2 launch ur_description robot_rviz.launch.py model:=<MODEL OF THE ROBOT>
-```
-
-### 2. Loading the Robot in Gazebo
+### Loading the Robot in Gazebo
 To start simulating the robot in Gazebo run the following command:
 ```bash
 ros2 launch ur_gz_bringup sil.launch.py model:=<MODEL OF THE ROBOT>
 ```
-To start simulating the robot in Gazebo along with rviz run the following command:
+> [!IMPORTANT]  
+> Enable Sim Time for Moveit Move Group, after starting the simulation.
+
+To Enable Sim Time for Moveit Move Group:
 ```bash
-ros2 launch ur_gz_bringup sil.launch.py model:=<MODEL OF THE ROBOT> rviz:=true
+ros2 param set /move_group use_sim_time true
 ```
 ## License 
 This project is licensed under the GPL-3.0-only License. See the [LICENSE](LICENSE) file for more details.
