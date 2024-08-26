@@ -1,5 +1,12 @@
-
 # Universal Robotics - Robotic Arm
+
+<p align="center">
+  <img src="https://img.shields.io/github/v/release/Robotics-Society-PEC/Robotic-Arm" alt="GitHub Release">
+  <img src="https://img.shields.io/github/license/Robotics-Society-PEC/Robotic-Arm" alt="GitHub License">
+  <img src="https://img.shields.io/github/stars/Robotics-Society-PEC/Robotic-Arm?style=flat" alt="GitHub Repo stars">
+  <img alt="GitHub Issues or Pull Requests" src="https://img.shields.io/github/issues/Robotics-Society-PEC/Robotic-Arm">
+  <img alt="GitHub forks" src="https://img.shields.io/github/forks/Robotics-Society-PEC/Robotic-Arm?style=flat">
+</p>
 
 ## Overview
 This project provides a ROS (Robot Operating System) package designed for controlling a Universal Robotics robotic arm.
