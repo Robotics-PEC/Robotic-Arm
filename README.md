@@ -36,7 +36,7 @@ If you haven't already installed Ubuntu, follow these steps:
 
 #### 2. Install ROS 2 Humble 
 > [!IMPORTANT]  
-> Cross Check these installtion commands from the official ROS2 installation guide
+> Cross Check these installation commands from the official ROS2 installation guide
 
 Follow the official ROS 2 [installation guide](https://docs.ros.org/en/humble/Installation/Ubuntu-Install-Debians.html) for Ubuntu:
 
@@ -64,7 +64,7 @@ Follow the official ROS 2 [installation guide](https://docs.ros.org/en/humble/In
 
 ### Installation for Docker
 > [!IMPORTANT]  
-> Cross Check these installtion commands from the official Docker installation guide
+> Cross Check these installation commands from the official Docker installation guide
 #### 1. Install Docker
 Docker is required to run the ROS 2 application in a containerized environment. Follow the official Docker [installation guide](https://docs.docker.com/desktop/install/linux-install/):
 
@@ -109,7 +109,7 @@ Docker is required to run the ROS 2 application in a containerized environment. 
 
 #### 2. Set Up NVIDIA Docker (Optional)
 > [!IMPORTANT]  
-> Cross Check these installtion commands from the official NVIDIA Docker installation guide
+> Cross Check these installation commands from the official NVIDIA Docker installation guide
 
 If you're using GPU acceleration, you'll need to set up NVIDIA Docker. Follow the official Nvidia Container Toolkit [installation guide](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html):
 
