@@ -127,8 +127,7 @@ If you're using GPU acceleration, you'll need to set up NVIDIA Docker. Follow th
 #### 3. Clone the Repository
 Clone this repository to your local machine:
 ```bash
-git clone https://github.com/your-repo/universal-robotics-arm.git
-cd universal-robotics-arm
+https://github.com/Robotics-Society-PEC/Robotic-Arm.git
 ```
 
 #### 4. Running the container
