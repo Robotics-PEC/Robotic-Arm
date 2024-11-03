@@ -10,6 +10,7 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PathJoinSubstitution
 from launch.conditions import IfCondition
 from launch_ros.actions import Node
+from launch_ros.actions import SetParameter
 
 # Define launch arguments
 ARGUMENTS = [
@@ -116,4 +117,9 @@ def generate_launch_description():
         output="screen",
     )
 
-    return LaunchDescription(ARGUMENTS + [demo, gz_sim, spawn_robot, bridge])
+    useSimTime = ExecuteProcess(
+        cmd=["ros2", "param", "set", "/move_group", "use_sim_time", "true"],
+        output="screen",
+    )
+
+    return LaunchDescription(ARGUMENTS + [demo, gz_sim, spawn_robot, bridge, useSimTime])
